@@ -1,4 +1,5 @@
-import { Menu } from "lucide-react";
+import ollama from 'ollama';
+import { useState } from "react";
 import { ChatMessage } from "~/components/ChatMessage";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
@@ -16,12 +17,35 @@ const chatHistory: Message[] = [
         content:
             "React is a popular JavaScript library for building user interfaces. It was developed by Facebook and is widely used for creating interactive, efficient, and reusable UI components. React uses a virtual DOM (Document Object Model) to improve performance by minimizing direct manipulation of the actual DOM. It also introduces JSX, a syntax extension that allows you to write HTML-like code within JavaScript.",
     },
-]; 
+];
 
 const ChatPage = () => {
+    const [messageInput, setMessageInput] = useState("");
+    const [streamedMessage, setStreamedMessage] = useState("");
 
     const handleSubmit = async () => {
         alert("chat");
+
+        const stream = await ollama.chat({
+            model: "llama3:latest",
+            messages: [
+                {
+                    role: "user",
+                    content: messageInput.trim(),
+                },
+            ],
+            stream: true,
+        });
+
+        let fullContent = "";
+
+        for await (const part of stream) {
+            const messageContent = part.message.content;
+
+            fullContent += messageContent;
+
+            setStreamedMessage(fullContent);
+        }
     };
 
     return (
@@ -38,6 +62,10 @@ const ChatPage = () => {
                             content={message.content}
                         />
                     ))}
+                    {
+                        !!streamedMessage &&
+                        <ChatMessage role="assistant" content={streamedMessage}/>
+                    }
                 </div>
             </main>
             <footer className="border-t p-4">
@@ -46,6 +74,8 @@ const ChatPage = () => {
                         className="flex-1"
                         placeholder="Type your message here..."
                         rows={5}
+                        value={messageInput}
+                        onChange={(e) => setMessageInput(e.target.value)}
                     />
                     <Button onClick={handleSubmit} type="button">
                         Send
