@@ -1,6 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import ollama from 'ollama';
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { useParams } from 'react-router';
 import { ChatMessage } from "~/components/ChatMessage";
 import { Button } from "~/components/ui/button";
@@ -10,6 +10,8 @@ import { db } from '~/lib/dexie';
 const ChatPage = () => {
     const [messageInput, setMessageInput] = useState("");
     const [streamedMessage, setStreamedMessage] = useState("");
+
+    const scrollToBottomRef = useRef<HTMLDivElement>(null);
 
     const params = useParams();
 
@@ -34,6 +36,8 @@ const ChatPage = () => {
             stream: true,
         });
 
+        setMessageInput("");
+
         let fullContent = "";
 
         for await (const part of stream) {
@@ -50,10 +54,18 @@ const ChatPage = () => {
             thought: "",
             thread_id: params.threadId as string,
         })
-        
+
         // agar pesan tidak muncul 2 kali
         setStreamedMessage("");
     };
+
+    const handleScrollToBottom = () => {
+        scrollToBottomRef.current?.scrollIntoView()
+    }
+
+    useLayoutEffect(() => {
+        handleScrollToBottom();
+    }, [streamedMessage, messages]);
 
     return (
         <div className="flex flex-col flex-1">
@@ -71,8 +83,12 @@ const ChatPage = () => {
                     ))}
                     {
                         !!streamedMessage &&
-                        <ChatMessage role="assistant" content={streamedMessage}/>
+                        <ChatMessage role="assistant" content={streamedMessage} />
                     }
+
+                    <div ref={scrollToBottomRef}>
+
+                    </div>
                 </div>
             </main>
             <footer className="border-t p-4">
