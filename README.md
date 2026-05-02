@@ -1,50 +1,38 @@
-# React + TypeScript + Vite
+# Local AI Chat
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a local AI chat web application built with React, TypeScript, and Vite. It allows you to chat with AI models running locally on your machine without relying on external APIs, ensuring complete privacy.
 
-Currently, two official plugins are available:
+## Fitur Utama & Teknologi
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Proyek ini dibangun menggunakan modern stack untuk memastikan performa yang cepat dan pengalaman pengguna yang mulus:
 
-## Expanding the ESLint configuration
+- **Local AI Models:** Terintegrasi dengan [Ollama](https://ollama.com/) untuk menjalankan berbagai model AI secara lokal di perangkat Anda.
+- **Local Storage:** Riwayat percakapan disimpan dengan aman di browser menggunakan **Dexie.js** (IndexedDB wrapper), sehingga data chat Anda tidak pernah meninggalkan perangkat.
+- **Frontend Stack:** 
+  - **React** dengan **TypeScript** & **Vite**.
+  - **Tailwind CSS** untuk styling.
+  - Komponen UI dari **Radix UI**.
+- **Markdown Support:** Pesan dari AI dirender dengan **React Markdown**, mendukung format seperti code block.
+- **Routing & Forms:** Menggunakan **React Router** untuk navigasi dan **React Hook Form** + **Zod** untuk handling input.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Acknowledgements & Credits
 
-- Configure the top-level `parserOptions` property like this:
+This project was built following a tutorial and using a UI boilerplate provided by **VoidFnc**. Huge thanks for the helpful resources!
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- **Creator:** VoidFnc
+- **YouTube Tutorial:** [Video Link](https://www.youtube.com/watch?v=VxGPm5ffPTc&t=4937s)
+- **Base UI Template Repository:** [theodevoid/local-ai-chat - branch: 1-base-ui-template](https://github.com/theodevoid/local-ai-chat/tree/1-base-ui-template)
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Getting Started
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+To run this project locally:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Start the development server:
+   ```bash
+   npm run dev
+   ```
