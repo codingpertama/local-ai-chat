@@ -51,6 +51,8 @@ const ChatPage = () => {
             thread_id: params.threadId as string,
         })
         
+        // agar pesan tidak muncul 2 kali
+        setStreamedMessage("");
     };
 
     return (
